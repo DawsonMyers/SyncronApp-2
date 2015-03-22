@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="ca.syncron.app" >
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- <uses-permission android:name="ANDROID.PERMISSION.INTERNET" /> -->
+    <application
+        android:name=".system.Syncron_"
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:logo="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@android:style/Theme.Holo" >
+        <activity
+            android:name=".MainActivity_"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.fragments.FragmentActivity"
+            android:label="@string/title_activity_fragment" >
+
+            <!--
+            	<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+
+				<category android:name="android.intent.category.LAUNCHER" />
+			</intent-filter>
+            -->
+        </activity>
+
+        <service
+            android:name=".system.SyncronService_"
+            android:enabled="true"
+            android:exported="true" >
+        </service>
+
+        <activity
+            android:name=".ui.fragments.TabActivity"
+            android:label="@string/title_activity_tab" >
+        </activity>
+    </application>
+
+</manifest>
