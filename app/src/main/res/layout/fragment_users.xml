@@ -2,16 +2,26 @@
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="fill_parent"
              android:layout_height="match_parent"
-             tools:context="ca.syncron.app.ui.fragments.UsersFragment"
+             tools:context="ca.syncron.app.ui.fragments.UsersFragment_"
         >
 
-
+	<ListView
+			android:id="@+id/userList"
+			android:layout_width="240dp"
+			android:layout_height="match_parent"
+			android:layout_gravity="start"
+			android:background="#111"
+			android:choiceMode="singleChoice"
+			android:divider="@android:color/transparent"
+			android:dividerHeight="0dp"
+			android:layout_toStartOf="@+id/userButton"
+			android:clickable="true" />
     <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Create"
-            android:id="@+id/button5"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="144dp" />
+            android:id="@+id/userButton"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true" />
+
 </RelativeLayout>

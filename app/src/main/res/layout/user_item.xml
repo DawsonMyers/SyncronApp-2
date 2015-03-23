@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:padding="10dp">
+	<LinearLayout
+			android:orientation="vertical"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content">
+	<LinearLayout
+			android:orientation="horizontal"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:showDividers="middle"
+			android:weightSum="2"
+			android:layout_margin="5dp"
+			android:clickable="true"
+			android:id="@+id/linearLayout3"
+			android:padding="10dp">
+
+		<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textAppearance="?android:attr/textAppearanceLarge"
+				android:text="Name:"
+				android:layout_weight="1"
+				android:id="@+id/lblName"
+				android:layout_alignParentTop="true"
+				android:layout_alignParentStart="true" />
+
+		<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textAppearance="?android:attr/textAppearanceLarge"
+				android:text="myName"
+				android:id="@+id/uName"
+				android:layout_weight="1"
+				android:layout_marginLeft="5dp"
+				/>
+	</LinearLayout>
+
+	<LinearLayout
+			android:orientation="horizontal"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:showDividers="middle"
+			android:weightSum="2"
+			android:clickable="true"
+			android:layout_marginLeft="5dp"
+			android:layout_marginRight="5dp"
+
+			android:layout_alignParentEnd="true"
+			android:id="@+id/linearLayout4"
+			android:padding="10dp">
+
+		<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textAppearance="?android:attr/textAppearanceLarge"
+				android:text="Type"
+				android:id="@+id/lblType"
+				android:layout_alignParentTop="true"
+				android:layout_alignParentStart="true"
+				android:layout_weight="1"/>
+
+		<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textAppearance="?android:attr/textAppearanceLarge"
+				android:text="myType"
+				android:id="@+id/uType"
+				android:layout_marginLeft="5dp"
+				android:layout_weight="1"/>
+	</LinearLayout>
+
+	<LinearLayout
+			android:orientation="horizontal"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:showDividers="middle"
+			android:weightSum="2"
+			android:clickable="true"
+			android:layout_marginLeft="5dp"
+			android:layout_marginRight="5dp"
+
+			android:layout_alignParentEnd="true"
+			android:id="@+id/linearLayout5"
+			android:padding="10dp">
+
+		<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textAppearance="?android:attr/textAppearanceLarge"
+				android:text="ID:"
+				android:id="@+id/lblID"
+				android:layout_alignParentTop="true"
+				android:layout_alignParentStart="true"
+				android:layout_weight="1"/>
+
+		<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textAppearance="?android:attr/textAppearanceLarge"
+				android:text="myID"
+				android:id="@+id/uId"
+				android:layout_marginLeft="5dp"
+				android:layout_weight="1"/>
+	</LinearLayout>
+
+	<LinearLayout
+			android:orientation="horizontal"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:showDividers="middle"
+			android:weightSum="2"
+			android:clickable="true"
+			android:layout_marginLeft="5dp"
+			android:layout_marginRight="5dp"
+
+			android:layout_marginStart="100dp"
+			android:id="@+id/linearLayout6"
+			android:padding="10dp">
+
+		<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textAppearance="?android:attr/textAppearanceLarge"
+				android:text="Date:"
+				android:id="@+id/lblDate"
+				android:layout_alignParentTop="true"
+				android:layout_alignParentStart="true"
+				android:layout_weight="1"/>
+
+		<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textAppearance="?android:attr/textAppearanceLarge"
+				android:text="myDate"
+				android:id="@+id/uDate"
+				android:layout_marginLeft="5dp"
+				android:layout_weight="1"/>
+	</LinearLayout>
+
+	<LinearLayout
+			android:orientation="horizontal"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:showDividers="middle"
+			android:weightSum="2"
+			android:clickable="true"
+			android:layout_marginLeft="5dp"
+			android:layout_marginRight="5dp"
+
+			android:layout_marginEnd="62dp"
+			android:padding="10dp">
+
+		<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textAppearance="?android:attr/textAppearanceLarge"
+				android:text="Access:"
+				android:id="@+id/uAccess"
+				android:layout_alignParentTop="true"
+				android:layout_alignParentStart="true"
+				android:layout_weight="1"/>
+
+		<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textAppearance="?android:attr/textAppearanceLarge"
+				android:text="myDate"
+				android:id="@+id/textView4"
+				android:layout_marginLeft="5dp"
+				android:layout_weight="1"/>
+	</LinearLayout>
+</LinearLayout>
+</RelativeLayout>

@@ -2,6 +2,7 @@ package ca.syncron.app.network.connection;
 
 import ca.syncron.app.Constants;
 import ca.syncron.app.network.Message;
+import ca.syncron.app.network.UserBundle;
 import ca.syncron.app.system.SyncronService;
 import naga.NIOServerSocket;
 import naga.NIOSocket;
@@ -14,6 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.util.ArrayList;
 
 import static java.lang.System.out;
 
@@ -36,6 +38,16 @@ public class Client extends Thread implements SocketObserver, Handler.MessageCal
 	private boolean mIsServer = false;
 	public NIOSocket mSocket;
 	public boolean   mConnected;
+
+	public ArrayList<UserBundle> getUserBundles() {
+		return mUserBundles;
+	}
+
+	public void setUserBundles(ArrayList<UserBundle> userBundles) {
+		mUserBundles = userBundles;
+	}
+
+	public ArrayList<UserBundle> mUserBundles = new ArrayList<>();
 
 	public Client() {
 		me = this;
@@ -211,9 +223,8 @@ public class Client extends Thread implements SocketObserver, Handler.MessageCal
 
 	@Override
 	public void handleStatusMessage(Message msg) {
-
+setUserBundles(msg.getUserBundles());
 		mController.updateStatus(msg);
-
 	}
 
 	@Override

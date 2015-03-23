@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+
+	<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textAppearance="?android:attr/textAppearanceLarge"
+			android:text="myName"
+			android:id="@+id/uName"
+			android:layout_weight="0"
+			/>
+
+
+<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:textAppearance="?android:attr/textAppearanceLarge"
+		android:text="myType"
+		android:id="@+id/uType"
+
+		android:layout_weight="0"/>
+
+
+<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:textAppearance="?android:attr/textAppearanceLarge"
+		android:text="myID"
+		android:id="@+id/uId"
+		android:layout_marginLeft="0dp"
+		android:layout_weight="0"/>
+
+
+
+
+<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:textAppearance="?android:attr/textAppearanceLarge"
+		android:text="myDate"
+		android:id="@+id/uDate"
+
+		android:layout_weight="0"/>
+
+
+
+
+<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:textAppearance="?android:attr/textAppearanceLarge"
+		android:text="Access:"
+		android:id="@+id/uAccess"
+		android:layout_alignParentTop="true"
+		android:layout_alignParentStart="true"
+		android:layout_weight="0"/>
+
+
+
+
+
+</LinearLayout>

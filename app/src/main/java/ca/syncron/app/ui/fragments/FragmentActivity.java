@@ -12,35 +12,71 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import ca.syncron.app.R;
+import ca.syncron.app.system.SyncronService;
+import ca.syncron.app.system.SyncronService_;
+import ca.syncron.app.ui.activity.speechbubble.ChatFragment_;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.res.StringArrayRes;
 
-public class FragmentActivity extends Activity {
+//@EActivity(R.layout.activity_fragment)
+@EActivity
+public class FragmentActivity extends Activity implements SyncronService.UpdateObserver, SyncronService.ConnectionObserver{
+
+@StringArrayRes(R.array.navigation_drawer_items_array)
+      String[]     mNavigationDrawerItemTitles1;
+	String[]     mNavigationDrawerItemTitles = new String[]{"Users", "Connection", "Status", "Chat"};
+	@ViewById(R.id.drawer_layout)
+      DrawerLayout mDrawerLayout;
+	@ViewById(R.id.left_drawer)
+      ListView     mDrawerList;
 
 
-    private String[]     mNavigationDrawerItemTitles;
-    private DrawerLayout mDrawerLayout;
-    private ListView     mDrawerList;
-    ObjectDrawerItem[] drawerItem = new ObjectDrawerItem[3];
+	//****  Have to update index when adding new fragments
+    ObjectDrawerItem[] drawerItem = new ObjectDrawerItem[4];
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_fragment);
+       setContentView(R.layout.activity_fragment);
 
-        mNavigationDrawerItemTitles= getResources().getStringArray(R.array.navigation_drawer_items_array);
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerList = (ListView) findViewById(R.id.left_drawer);
+       // mNavigationDrawerItemTitles= getResources().getStringArray(R.array.navigation_drawer_items_array);
+      //  mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+     //   mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
         DrawerItemCustomAdapter adapter = new DrawerItemCustomAdapter(this, R.layout.listview_item_row, drawerItem);
         mDrawerList.setAdapter(adapter);
 
-        drawerItem[0] = new ObjectDrawerItem(R.drawable.ic_action_copy, "Create");
-        drawerItem[1] = new ObjectDrawerItem(R.drawable.ic_action_refresh, "Read");
-        drawerItem[2] = new ObjectDrawerItem(R.drawable.ic_action_share, "Help");
+        drawerItem[0] = new ObjectDrawerItem(R.drawable.ic_action_copy, "Users");
+        drawerItem[1] = new ObjectDrawerItem(R.drawable.ic_action_refresh, "Connection");
+        drawerItem[2] = new ObjectDrawerItem(R.drawable.ic_action_share, "Status");
+        drawerItem[3] = new ObjectDrawerItem(R.drawable.ic_action_share, "Chat");
 
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
     }
 
+	@Override
+	public void connectionStatus(boolean b) {
 
-    public class DrawerItemClickListener implements ListView.OnItemClickListener {
+	}
+
+	@Override
+	public void updateAnalog(int[] values) {
+
+	}
+
+	@Override
+	public void updateDigital(int[] values) {
+
+	}
+
+	@Override
+	public void updateChat(String[] values) {
+
+	}
+
+
+	public class DrawerItemClickListener implements ListView.OnItemClickListener {
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -55,13 +91,16 @@ public class FragmentActivity extends Activity {
 
         switch (position) {
             case 0:
-                fragment = new UsersFragment();
+                fragment = new UsersFragment_.FragmentBuilder_().build();
                 break;
             case 1:
                 fragment = new ReadFragment();
                 break;
             case 2:
-                fragment = new HelpFragment();
+                fragment = new HelpFragment_.FragmentBuilder_().build();
+                break;
+            case 3:
+            fragment = new ChatFragment_.FragmentBuilder_().build();
                 break;
 
             default:
@@ -74,7 +113,8 @@ public class FragmentActivity extends Activity {
 
             mDrawerList.setItemChecked(position, true);
             mDrawerList.setSelection(position);
-            getActionBar().setTitle(mNavigationDrawerItemTitles[position]);
+           // getActionBar().setTitle(mNavigationDrawerItemTitles[position]);
+            getActionBar().setTitle(drawerItem[position].name);
             mDrawerLayout.closeDrawer(mDrawerList);
 
         } else {
@@ -85,8 +125,8 @@ public class FragmentActivity extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+        getMenuInflater().inflate(R.menu.menu_frag, menu);
+        return super.onCreateOptionsMenu(menu); //true;
     }
 
     @Override
@@ -100,7 +140,11 @@ public class FragmentActivity extends Activity {
         if (id == R.id.action_settings) {
             return true;
         }
+	    switch (item.getItemId()) {
 
+		    case R.id.action_connect:
+			    SyncronService_.intent(getApplication()).start();
+	    }
         return super.onOptionsItemSelected(item);
     }
 }

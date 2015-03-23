@@ -1,6 +1,5 @@
 package ca.syncron.app.network;
 
-import ca.syncron.app.Constants;
 import ca.syncron.app.MessageProcessor;
 import ca.syncron.app.system.SyncronService;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -12,7 +11,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -25,6 +23,7 @@ import java.util.logging.Logger;
  */
 // Configure Jackson to only encode fields that are non-null
 @JsonInclude(JsonInclude.Include.NON_NULL)
+
 // Configure Jackson to exlcude the user and serialized message string
 @JsonIgnoreProperties({"mTargetUser", "mSerialMessage"})
 @SuppressWarnings("ALL")
@@ -244,6 +243,15 @@ public class Message {
 	String                mUserName;
 	ArrayList<UserBundle> mUserBundles;
 
+	public String getName() {
+		return mName;
+	}
+
+	public void setName(String name) {
+		mName = name;
+	}
+
+	String mName;
 
 	String[] tags;
 
@@ -258,16 +266,18 @@ public class Message {
 
 	String mAdminCommad;
 
-	String  mNodeServerId ;
-	boolean isTargeted    ;
+	String  mNodeServerId;
+	boolean isTargeted;
 
 	long sampleRate;
 
 	boolean streamEnabled;
+
 	//////////////////////////////////////////////////////////////////
 	public void setUserBundles(ArrayList<UserBundle> userBundles) {
 		mUserBundles = userBundles;
 	}
+
 	public boolean getStreamEnabled() {
 		return streamEnabled;
 	}
@@ -283,6 +293,7 @@ public class Message {
 	public boolean isStreamEnabled() {
 		return streamEnabled;
 	}
+
 	public void setStreamEnabled(boolean streamEnabled) {
 		this.streamEnabled = streamEnabled;
 	}
@@ -611,88 +622,4 @@ public class Message {
 		mUserName = userName;
 	}
 
-}
-
-/**
- * Created by Dawson on 3/12/2015.
- */
-@JsonIgnoreProperties(ignoreUnknown = true)
-class UserBundle {
-	static String           nameId = UserBundle.class.getSimpleName();
-	//public final static org.slf4j.Logger log    = LoggerFactory.getLogger(nameId);
-	public String           name   = "NotSet";
-	public Message.UserType type   = Message.UserType.ANDROID;
-	public String           userId = "NotSet";
-	Date timeStamp;// = new Date();
-	Constants.Access accessLevel = Constants.Access.USER;
-//	public HashMap<String, NodeClientBundler.NodeBundle> nodes = new HashMap<>();
-
-	@JsonCreator
-	public UserBundle() { }
-
-//	public UserBundle(User user) {
-//		name = user.getName();
-//		type = user.getType();
-//		userId = user.getUserId();
-//		timeStamp = user.getTimeStamp();
-//		accessLevel = user.getAccessLevel();
-//		nodes = user.getNodes();
-//	}
-
-//	public void init() {
-//		name = mName;
-//		type = mType;
-//		userId = mUserId;
-//		timeStamp = mTimeStamp;
-//		accessLevel = mAccessLevel;
-//	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public Message.UserType getType() {
-		return type;
-	}
-
-	public void setType(Message.UserType type) {
-		this.type = type;
-	}
-
-	public String getUserId() {
-		return userId;
-	}
-
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
-
-	public Date getTimeStamp() {
-		return timeStamp;
-	}
-
-	public void setTimeStamp(Date timeStamp) {
-		this.timeStamp = timeStamp;
-	}
-
-	public Constants.Access getAccessLevel() {
-		return accessLevel;
-	}
-
-	public void setAccessLevel(Constants.Access accessLevel) {
-		this.accessLevel = accessLevel;
-	}
-
-//	public void init(User user) {
-//		name = user.getName();
-//		type = user.getType();
-//		userId = user.getUserId();
-//		timeStamp = user.getTimeStamp();
-//		accessLevel = user.getAccessLevel();
-//		nodes = user.getNodes();
-//	}
 }

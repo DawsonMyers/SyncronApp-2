@@ -6,10 +6,13 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
+import android.util.Log;
 import android.widget.Toast;
 import ca.syncron.app.R;
 import ca.syncron.app.network.Message;
+import ca.syncron.app.network.UserBundle;
 import ca.syncron.app.network.connection.Client;
+import ca.syncron.app.network.connection.User;
 import org.androidannotations.annotations.EService;
 
 import java.util.ArrayList;
@@ -25,16 +28,31 @@ public class SyncronService extends Service {
 	private Message.UserType mUserType = Message.UserType.ANDROID;
 	private static volatile int[] mDigital;
 	private static volatile int[] mAnalog;
-	static ArrayList<UpdateObserver>     analogObservers     = new ArrayList<>();
-	static ArrayList<UpdateObserver>     digitalObservers    = new ArrayList<>();
-	static ArrayList<UpdateObserver>     chatObservers       = new ArrayList<>();
-	static ArrayList<ConnectionObserver> connectionObservers = new ArrayList<>();
-	public ExecutorService               executor            = Executors.newCachedThreadPool();
+	static        ArrayList<UpdateObserver>     analogObservers     = new ArrayList<>();
+	static        ArrayList<UpdateObserver>     digitalObservers    = new ArrayList<>();
+	static        ArrayList<UpdateObserver>     chatObservers       = new ArrayList<>();
+	static        ArrayList<ConnectionObserver> connectionObservers = new ArrayList<>();
+	public        ExecutorService               executor            = Executors.newCachedThreadPool();
+	public        ArrayList<UserBundle>         userBundles         = new ArrayList<>();
 
-	public static boolean mConnected = false;
-	public  Client mClient;
-	private long   mSampleRate;
+
+
+	public        ArrayList<User> users      = new ArrayList<>();
+	public static boolean         mConnected = false;
+	public  Client  mClient;
+	private long    mSampleRate;
 	private boolean mStreamEnabled;
+	ArrayList<UserBundle> mUserBundles = new ArrayList<>();
+
+	public String getStrUserBundles() {
+		return strUserBundles;
+	}
+
+	public void setStrUserBundles(String strUserBundles) {
+		this.strUserBundles = strUserBundles;
+	}
+
+	private String strUserBundles;
 
 	public SyncronService() {
 		//	executor.execute(() -> {
@@ -72,12 +90,23 @@ public class SyncronService extends Service {
 		serviceNotification();
 	}
 
+	public ArrayList<User> convertUser(ArrayList<UserBundle> list) {
+		ArrayList<User> users = new ArrayList<>();
+		for (UserBundle b : list) {
+			users.add(new User(b));
+		}
+		return users;
+	}
+
 	public Message.UserType getUserType() {
 		return mUserType;
 	}
 
 	public void updateStatus(Message msg) {
-
+		userBundles = msg.getUserBundles();
+		strUserBundles = userBundles.toString();
+		if (userBundles != null) users = convertUser(userBundles);
+		Log.e("updateStatus", strUserBundles);
 	}
 
 	public int[] getDigital() {
@@ -180,6 +209,10 @@ public class SyncronService extends Service {
 		mStreamEnabled = streamEnabled;
 	}
 
+	public ArrayList<UserBundle> getUserBundles() {
+		return mClient.getUserBundles();// mUserBundles;
+	}
+
 	public interface UpdateObserver {
 		void updateAnalog(int[] values);
 		void updateDigital(int[] values);
@@ -208,10 +241,10 @@ public class SyncronService extends Service {
 				.setContentText("Subject")
 				.setSmallIcon(R.drawable.ic_service)
 				.setContentIntent(pIntent)
-				.setAutoCancel(true).build();
-                              /*.addAction(R.drawable.syncron_filled, "Call", pIntent)
-                              .addAction(R.drawable.syncron_filled, "More", pIntent)
-                              .addAction(R.drawable.syncron_filled, "And more", pIntent).build();*/
+				.setAutoCancel(true)
+                              .addAction(R.drawable.ic_action_connect, "Shutdown", pIntent).build();
+//                              .addAction(R.drawable.syncron_filled, "More", pIntent)
+//                              .addAction(R.drawable.syncron_filled, "And more", pIntent).build();*/
 
 
 		NotificationManager notificationManager =
@@ -219,5 +252,11 @@ public class SyncronService extends Service {
 
 		notificationManager.notify(0, n);
 	}
+	public ArrayList<User> getUsers() {
+		return users;
+	}
 
+	public void setUsers(ArrayList<User> users) {
+		this.users = users;
+	}
 }
