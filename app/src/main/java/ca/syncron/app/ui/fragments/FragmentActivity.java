@@ -94,7 +94,7 @@ public class FragmentActivity extends Activity implements SyncronService.UpdateO
                 fragment = new UsersFragment_.FragmentBuilder_().build();
                 break;
             case 1:
-                fragment = new ReadFragment();
+                fragment = new ConnectionFragment_.FragmentBuilder_().build();
                 break;
             case 2:
                 fragment = new HelpFragment_.FragmentBuilder_().build();

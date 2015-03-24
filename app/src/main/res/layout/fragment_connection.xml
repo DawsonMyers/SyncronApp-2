@@ -1,0 +1,63 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="fill_parent"
+             android:layout_height="match_parent"
+             tools:context="ca.syncron.app.ui.fragments.UsersFragment_"
+        >
+
+
+    <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Save"
+            android:id="@+id/saveButton"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true" />
+
+	<LinearLayout
+			android:orientation="vertical"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+
+			android:layout_above="@+id/saveButton">
+
+		<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textAppearance="?android:attr/textAppearanceMedium"
+				android:text="Server IP"
+				 />
+
+		<EditText
+				android:id="@+id/serverIp"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				 android:hint="dawsonmyers.ca"/>
+		<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textAppearance="?android:attr/textAppearanceMedium"
+				android:text="Server Port"
+				 />
+
+		<EditText
+				android:id="@+id/serverPort"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				 android:hint="6500"/>
+		<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textAppearance="?android:attr/textAppearanceMedium"
+				android:text="User Name"
+				 />
+
+		<EditText
+				android:id="@+id/userName"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				 android:hint="Android"/>
+	</LinearLayout>
+
+</RelativeLayout>

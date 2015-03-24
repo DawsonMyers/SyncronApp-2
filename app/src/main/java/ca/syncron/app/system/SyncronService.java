@@ -13,7 +13,14 @@ import ca.syncron.app.network.Message;
 import ca.syncron.app.network.UserBundle;
 import ca.syncron.app.network.connection.Client;
 import ca.syncron.app.network.connection.User;
+import ca.syncron.app.system.ottoevents.EEventBus;
+import ca.syncron.app.system.ottoevents.EventBus;
+import com.squareup.otto.Subscribe;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EService;
+import org.androidannotations.annotations.UiThread;
+import org.androidannotations.annotations.sharedpreferences.Pref;
+import roboguice.util.Ln;
 
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
@@ -25,16 +32,16 @@ public class SyncronService extends Service {
 	//public volatile static int[]          digitalVals;
 	public        Syncron        app;
 	private String           mUserName = "DawsonDroid";
+	private String           mServerIp = "dawsonmyers.ca";
 	private Message.UserType mUserType = Message.UserType.ANDROID;
 	private static volatile int[] mDigital;
 	private static volatile int[] mAnalog;
-	static        ArrayList<UpdateObserver>     analogObservers     = new ArrayList<>();
-	static        ArrayList<UpdateObserver>     digitalObservers    = new ArrayList<>();
-	static        ArrayList<UpdateObserver>     chatObservers       = new ArrayList<>();
-	static        ArrayList<ConnectionObserver> connectionObservers = new ArrayList<>();
-	public        ExecutorService               executor            = Executors.newCachedThreadPool();
-	public        ArrayList<UserBundle>         userBundles         = new ArrayList<>();
-
+	static ArrayList<UpdateObserver>     analogObservers     = new ArrayList<>();
+	static ArrayList<UpdateObserver>     digitalObservers    = new ArrayList<>();
+	static ArrayList<UpdateObserver>     chatObservers       = new ArrayList<>();
+	static ArrayList<ConnectionObserver> connectionObservers = new ArrayList<>();
+	public ExecutorService               executor            = Executors.newCachedThreadPool();
+	public ArrayList<UserBundle>         userBundles         = new ArrayList<>();
 
 
 	public        ArrayList<User> users      = new ArrayList<>();
@@ -43,6 +50,11 @@ public class SyncronService extends Service {
 	private long    mSampleRate;
 	private boolean mStreamEnabled;
 	ArrayList<UserBundle> mUserBundles = new ArrayList<>();
+	@Pref
+	AppPrefs_   prefs;
+	@Bean
+	public
+	EEventBus bus;
 
 	public String getStrUserBundles() {
 		return strUserBundles;
@@ -88,6 +100,10 @@ public class SyncronService extends Service {
 	public void onCreate() {
 		super.onCreate();
 		serviceNotification();
+//		EventBus.register(this);
+		bus.register(this);
+		mServerIp = prefs.serverIp().get();
+		mUserName = prefs.userName().get();
 	}
 
 	public ArrayList<User> convertUser(ArrayList<UserBundle> list) {
@@ -212,6 +228,10 @@ public class SyncronService extends Service {
 	public ArrayList<UserBundle> getUserBundles() {
 		return mClient.getUserBundles();// mUserBundles;
 	}
+@UiThread
+	public void handleChat(Message msg) {
+		bus.getInstance().newChatReceiveEvent(new User(msg),msg.getChatMessage());
+	}
 
 	public interface UpdateObserver {
 		void updateAnalog(int[] values);
@@ -258,5 +278,26 @@ public class SyncronService extends Service {
 
 	public void setUsers(ArrayList<User> users) {
 		this.users = users;
+	}
+
+	@Subscribe
+	public void onSendChat(EventBus.ChatSendEvent event) {
+		Ln.d("SEND CHAT EVENT");
+		Toast.makeText(Syncron.getInstance(), "Chat: " + event.mMsg, Toast.LENGTH_SHORT).show();
+		mClient.sendChatMessage( Message.newChat(event.mMsg));
+	}
+	@Subscribe
+	public void onSendChat(EventBus.ChatReceiveEvent event) {
+		Ln.d("RECEIVE CHAT EVENT");
+		Toast.makeText(Syncron.getInstance(), "Chat: " + event.mMsg, Toast.LENGTH_SHORT).show();
+	//	mClient.sendChatMessage( Message.newChat(event.mMsg));
+	}
+
+	public String getServerIp() {
+		return mServerIp;
+	}
+
+	public void setServerIp(String serverIp) {
+		mServerIp = serverIp;
 	}
 }

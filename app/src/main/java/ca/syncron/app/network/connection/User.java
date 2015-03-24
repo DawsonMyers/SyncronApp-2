@@ -1,7 +1,10 @@
 package ca.syncron.app.network.connection;
 
+import ca.syncron.app.network.Message;
 import ca.syncron.app.network.UserBundle;
 import org.slf4j.LoggerFactory;
+
+import java.util.Date;
 
 /**
  * Created by Dawson on 3/22/2015.
@@ -45,6 +48,13 @@ public class User {
 		timeStamp = "date";//bundle.getTimeStamp().toString();
 		accessLevel = bundle.getAccessLevel().toString();
 		log.error("USER ITEM BOUND");
+	}
+	public User(Message msg) {
+		name = msg.getName();
+		type = msg.getUserType().toString();
+		userId = msg.getUserId();
+		timeStamp =new Date().toString();
+		accessLevel = "User";
 	}
 //	public User(UserBundle bundle) {
 //		name = bundle.getName();

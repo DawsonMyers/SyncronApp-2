@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -33,7 +34,8 @@ public class Message {
 	@JsonIgnore
 	public final static Logger log = Logger.getAnonymousLogger();
 	@JsonIgnore
-	public MessageProcessor mapper;
+	public  MessageProcessor mapper;
+	private Date             mTimestamp;
 
 	public void setSerialMessage(String serialMessage) {
 		mSerialMessage = serialMessage;
@@ -41,6 +43,22 @@ public class Message {
 
 	public String getSerialMessage() {
 		return mSerialMessage;
+	}
+
+	public static Message newChat(String strMsg) {
+		Message msg = new Message();
+		msg.init();
+		msg.setChatMessage(strMsg);
+		msg.setMessageType(MessageType.CHAT);
+		msg.setChatType(Chat.USERS);
+		return msg;
+	}
+
+	private void init() {
+		setUserName(SyncronService.getInstance().getUserName());
+//		setMessageType(MessageType.CHAT);
+//		setChatType(Chat.USERS);
+
 	}
 
 
@@ -272,7 +290,13 @@ public class Message {
 	long sampleRate;
 
 	boolean streamEnabled;
+	public void setTimestamp(Date timestamp) {
+		mTimestamp = timestamp;
+	}
 
+	public Date getTimestamp() {
+		return mTimestamp;
+	}
 	//////////////////////////////////////////////////////////////////
 	public void setUserBundles(ArrayList<UserBundle> userBundles) {
 		mUserBundles = userBundles;

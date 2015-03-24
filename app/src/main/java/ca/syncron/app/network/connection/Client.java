@@ -4,6 +4,7 @@ import ca.syncron.app.Constants;
 import ca.syncron.app.network.Message;
 import ca.syncron.app.network.UserBundle;
 import ca.syncron.app.system.SyncronService;
+import ca.syncron.app.system.ottoevents.EventBus;
 import naga.NIOServerSocket;
 import naga.NIOSocket;
 import naga.SocketObserver;
@@ -38,7 +39,8 @@ public class Client extends Thread implements SocketObserver, Handler.MessageCal
 	private boolean mIsServer = false;
 	public NIOSocket mSocket;
 	public boolean   mConnected;
-
+//@Inject
+	EventBus bus = EventBus.getInstance();
 	public ArrayList<UserBundle> getUserBundles() {
 		return mUserBundles;
 	}
@@ -122,7 +124,7 @@ public class Client extends Thread implements SocketObserver, Handler.MessageCal
 	public void connect() {
 		int port = Constants.Ports.getTcp();
 		//  Client
-		String ip = Constants.IpAddresses.IP;
+		String ip = mController.getServerIp();// Constants.IpAddresses.IP;
 		try {
 			log.info("Starting Client");
 			EventMachine machine = new EventMachine();
@@ -193,7 +195,7 @@ public class Client extends Thread implements SocketObserver, Handler.MessageCal
 	@Override
 	public void handleChatMessage(Message msg) {
 
-
+mController.handleChat(msg); //bus.getInstance().newChatReceiveEvent(new User(msg),msg.getChatMessage());
 	}
 
 	@Override
@@ -281,7 +283,7 @@ setUserBundles(msg.getUserBundles());
 	}
 	@Override
 	public void sendChatMessage(Message msg) {
-
+sendMessage(msg);
 	}
 
 	@Override

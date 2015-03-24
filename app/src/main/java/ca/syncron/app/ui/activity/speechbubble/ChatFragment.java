@@ -9,10 +9,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import ca.syncron.app.R;
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Click;
-import org.androidannotations.annotations.EFragment;
-import org.androidannotations.annotations.ViewById;
+import ca.syncron.app.system.ottoevents.EEventBus;
+import ca.syncron.app.system.ottoevents.EventBus;
+import com.squareup.otto.Subscribe;
+import org.androidannotations.annotations.*;
+import roboguice.util.Ln;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -27,15 +28,17 @@ public class ChatFragment extends Fragment {
 
 
 	@ViewById
-	Button   sendMessage;
+	Button    sendMessage;
 	@ViewById
-	ListView chatList;
-
+	ListView  chatList;
+	@Bean
+	EEventBus bus;
 //	@Bean
 //	UserAdapter adapter;
 
 	@AfterViews
 	void bindAdapter() {
+		bus.register(this);
 		chatList.setAdapter(adapter);
 		addNewMessage(new Message("Syncron Chat", true));
 		//	userList.setAdapter(adapter);
@@ -43,7 +46,18 @@ public class ChatFragment extends Fragment {
 
 	@Click(R.id.sendMessage)
 	void onSendMessage(View v) {
-sendMessage(v);
+		sendMessage(v);
+		bus.getInstance().newChatSendEvent("odroid", "msg Tester");
+//		EventBus.getInstance().newChatSendEvent("odroid", "msg Tester");
+	}
+@UiThread
+	@Subscribe
+	public void onReceiveChat(EventBus.ChatReceiveEvent event) {
+		Ln.d("RECEIVE CHAT EVENT");
+		//Toast.makeText(Syncron.getInstance(), "Chat: " + event.mMsg, Toast.LENGTH_SHORT).show();
+		//	mClient.sendChatMessage( Message.newChat(event.mMsg));
+
+	addNewMessage(new Message(event.mUser.getUserId() + "\n" + event.mMsg,false));
 	}
 
 //	@Click(R.id.userButton)
