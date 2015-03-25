@@ -132,6 +132,14 @@ public class Handler extends Thread {
 			public abstract void handleUserMessage(Message msg);
 			public abstract void handleErrorMessage(Message msg);
 
+			public abstract void handleSubscribeMessage(Message msg);
+			public abstract void handleQueryMessage(Message msg);
+			public abstract void handleUnknownMessage(Message msg);
+			public abstract void handleAccessMessage(Message msg);
+			public abstract void handleTargetMessage(Message msg);
+
+			//
+			///////////////////////////////////////////////////////
 			public abstract void sendMessage(Message msg);
 			public abstract void sendUpdateMessage(Message msg);
 			public abstract void sendChatMessage(Message msg);
@@ -142,6 +150,14 @@ public class Handler extends Thread {
 			public abstract void sendDigitalMessage(String  pin, String  value);
 			public abstract void sendAnalogMessage(Message msg);
 			<T> void processMessage(T msg);
+
+			public abstract void sendSubscribeMessage(Message msg);
+			public abstract void sendUserMessage(Message msg);
+			public abstract void sendErrorMessage(Message msg);
+			public abstract void sendQueryMessage(Message msg);
+			public abstract void sendUnknownMessage(Message msg);
+			public abstract void sendAccessMessage(Message msg);
+			public abstract void sendTargetMessage(Message msg);
 		}
 
 

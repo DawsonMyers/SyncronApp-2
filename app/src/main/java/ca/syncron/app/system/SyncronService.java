@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
+import ca.syncron.app.Constants;
 import ca.syncron.app.R;
 import ca.syncron.app.network.Message;
 import ca.syncron.app.network.UserBundle;
@@ -16,6 +17,7 @@ import ca.syncron.app.network.connection.User;
 import ca.syncron.app.system.ottoevents.EEventBus;
 import ca.syncron.app.system.ottoevents.EventBus;
 import com.squareup.otto.Subscribe;
+import org.androidannotations.annotations.App;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EService;
 import org.androidannotations.annotations.UiThread;
@@ -25,12 +27,16 @@ import roboguice.util.Ln;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
 @EService
 public class SyncronService extends Service {
 
+	@App
+	Syncron app;
+
 	public static SyncronService me;
 	//public volatile static int[]          digitalVals;
-	public        Syncron        app;
+	//public        Syncron        app;
 	private String           mUserName = "DawsonDroid";
 	private String           mServerIp = "dawsonmyers.ca";
 	private Message.UserType mUserType = Message.UserType.ANDROID;
@@ -51,10 +57,15 @@ public class SyncronService extends Service {
 	private boolean mStreamEnabled;
 	ArrayList<UserBundle> mUserBundles = new ArrayList<>();
 	@Pref
-	AppPrefs_   prefs;
+	AppPrefs_ prefs;
 	@Bean
 	public
 	EEventBus bus;
+	private String mServerPort;
+	private String mMessageTargetId;
+
+
+
 
 	public String getStrUserBundles() {
 		return strUserBundles;
@@ -102,10 +113,26 @@ public class SyncronService extends Service {
 		serviceNotification();
 //		EventBus.register(this);
 		bus.register(this);
-		mServerIp = prefs.serverIp().get();
-		mUserName = prefs.userName().get();
+		initPrefs();
+//		mServerIp = prefs.serverIp().get();
+//		mServerPort = prefs.serverPort().get();
+//		Toast.makeText(Syncron.getInstance(), mServerIp, Toast.LENGTH_SHORT).show();
+//
+//		mUserName = prefs.userName().get();
 	}
-
+public void initPrefs() {
+	try {
+		mServerIp = prefs.serverIp().get();
+		if (mServerIp.length()< 4) mServerIp = Constants.IpAddresses.IP;
+		mServerPort = prefs.serverPort().getOr("6500");
+		if (mServerPort.length()< 4) mServerPort = Constants.Ports.getTcp() + "";
+		Toast.makeText(Syncron.getInstance(), mServerIp, Toast.LENGTH_SHORT).show();
+		mUserName = prefs.userName().get();
+		if (mUserName.length()< 2) mUserName = "Android";
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+}
 	public ArrayList<User> convertUser(ArrayList<UserBundle> list) {
 		ArrayList<User> users = new ArrayList<>();
 		for (UserBundle b : list) {
@@ -165,13 +192,12 @@ public class SyncronService extends Service {
 	}
 
 
-
 	public static void setDigitalVals(int[] digitalVals) {
 		SyncronService.mDigital = digitalVals;
 	}
 
 	public static void updateDigital(int[] values) {
-		mDigital  = values;
+		mDigital = values;
 		for (UpdateObserver observer : digitalObservers) {
 			observer.updateDigital(values);
 		}
@@ -190,7 +216,7 @@ public class SyncronService extends Service {
 		}
 	}
 
-	public   void sendDigital(String pin, String value) {
+	public void sendDigital(String pin, String value) {
 		mClient.sendDigitalMessage(pin, value);
 	}
 
@@ -200,7 +226,7 @@ public class SyncronService extends Service {
 		mClient.sendStreamMessage(null);
 	}
 
-	public   void sendDigital(String pin, boolean value) {
+	public void sendDigital(String pin, boolean value) {
 		String val = value ? "1" : "0";
 		sendDigital(pin, val);
 	}
@@ -228,9 +254,18 @@ public class SyncronService extends Service {
 	public ArrayList<UserBundle> getUserBundles() {
 		return mClient.getUserBundles();// mUserBundles;
 	}
-@UiThread
+
+	@UiThread
 	public void handleChat(Message msg) {
-		bus.getInstance().newChatReceiveEvent(new User(msg),msg.getChatMessage());
+		bus.getInstance().newChatReceiveEvent(new User(msg), msg.getChatMessage());
+	}
+
+	public String getMessageTargetId() {
+		return mMessageTargetId;
+	}
+
+	public void setMessageTargetId(String messageTargetId) {
+		mMessageTargetId = messageTargetId;
 	}
 
 	public interface UpdateObserver {
@@ -247,7 +282,7 @@ public class SyncronService extends Service {
 		return mConnected;
 	}
 
-	public void serviceNotification(){
+	public void serviceNotification() {
 		// prepare intent which is triggered if the
 // notification is selected
 
@@ -256,13 +291,13 @@ public class SyncronService extends Service {
 
 // build notification
 // the addAction re-use the same intent to keep the example short
-		Notification n  = new Notification.Builder(this)
+		Notification n = new Notification.Builder(this)
 				.setContentTitle("Data service running")
 				.setContentText("Subject")
 				.setSmallIcon(R.drawable.ic_service)
 				.setContentIntent(pIntent)
 				.setAutoCancel(true)
-                              .addAction(R.drawable.ic_action_connect, "Shutdown", pIntent).build();
+				.addAction(R.drawable.ic_action_connect, "Shutdown", pIntent).build();
 //                              .addAction(R.drawable.syncron_filled, "More", pIntent)
 //                              .addAction(R.drawable.syncron_filled, "And more", pIntent).build();*/
 
@@ -272,6 +307,7 @@ public class SyncronService extends Service {
 
 		notificationManager.notify(0, n);
 	}
+
 	public ArrayList<User> getUsers() {
 		return users;
 	}
@@ -280,17 +316,13 @@ public class SyncronService extends Service {
 		this.users = users;
 	}
 
-	@Subscribe
-	public void onSendChat(EventBus.ChatSendEvent event) {
-		Ln.d("SEND CHAT EVENT");
-		Toast.makeText(Syncron.getInstance(), "Chat: " + event.mMsg, Toast.LENGTH_SHORT).show();
-		mClient.sendChatMessage( Message.newChat(event.mMsg));
+
+	private void tost(String s) {
+		Toast.makeText(app, s , Toast.LENGTH_SHORT).show();
 	}
-	@Subscribe
-	public void onSendChat(EventBus.ChatReceiveEvent event) {
-		Ln.d("RECEIVE CHAT EVENT");
-		Toast.makeText(Syncron.getInstance(), "Chat: " + event.mMsg, Toast.LENGTH_SHORT).show();
-	//	mClient.sendChatMessage( Message.newChat(event.mMsg));
+
+	private void sendMessage(Message msg) {
+		mClient.sendMessage(msg);
 	}
 
 	public String getServerIp() {
@@ -299,5 +331,55 @@ public class SyncronService extends Service {
 
 	public void setServerIp(String serverIp) {
 		mServerIp = serverIp;
+	}
+
+	public String getServerPort() {
+		return mServerPort;
+	}
+
+	public int getServerPortInt() {
+		int port =Constants.Ports.getTcp() ; //6500;
+		boolean ret = mServerPort==null;
+		if (mServerPort==null) return port;
+		int tmp = 0;
+
+		try {
+			tmp = Integer.parseInt(mServerPort);
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+			return port;
+		} finally {
+		}
+		return tmp > 1024 ? tmp :  port ;
+	}
+
+	public void setServerPort(String serverPort) {
+		mServerPort = serverPort;
+	}
+	// Event Bus Callbacks
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+	@Subscribe
+	public void onSendChat(EventBus.ChatSendEvent event) {
+		Ln.d("SEND CHAT EVENT");
+		Toast.makeText(Syncron.getInstance(), "Chat: " + event.mMsg, Toast.LENGTH_SHORT).show();
+		mClient.sendChatMessage(Message.newChat(event.mMsg));
+	}
+
+	@Subscribe
+	public void onSendChat(EventBus.ChatReceiveEvent event) {
+		Ln.d("RECEIVE CHAT EVENT");
+		Toast.makeText(Syncron.getInstance(), "Chat: " + event.mMsg, Toast.LENGTH_SHORT).show();
+		//	mClient.sendChatMessage( Message.newChat(event.mMsg));
+	}
+	@Subscribe
+	public void onSendTarget(EventBus.SendTargetEvent e) {
+		e.msg.setTargetId(e.userId);
+		sendMessage(e.msg);
+	}
+
+	@Subscribe
+	public void onSetTargetId(EventBus.SetTargetIdEvent e) {
+		setMessageTargetId(e.targetId);
+		tost("Target Id: " + getMessageTargetId());
 	}
 }

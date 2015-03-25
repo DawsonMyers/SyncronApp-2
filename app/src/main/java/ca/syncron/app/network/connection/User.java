@@ -45,13 +45,13 @@ public class User {
 		name = bundle.getName();
 		type = bundle.getType().toString();
 		userId = bundle.getUserId();
-		timeStamp = "date";//bundle.getTimeStamp().toString();
+		timeStamp =  bundle.getTimeStamp().toString();
 		accessLevel = bundle.getAccessLevel().toString();
 		log.error("USER ITEM BOUND");
 	}
 	public User(Message msg) {
 		name = msg.getName();
-		type = msg.getUserType().toString();
+		type = String.valueOf(msg.getUserType());
 		userId = msg.getUserId();
 		timeStamp =new Date().toString();
 		accessLevel = "User";

@@ -1,6 +1,5 @@
 package ca.syncron.app.ui.fragments;
 
-
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
@@ -10,10 +9,7 @@ import android.widget.EditText;
 import ca.syncron.app.R;
 import ca.syncron.app.system.AppPrefs_;
 import ca.syncron.app.system.Syncron_;
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Click;
-import org.androidannotations.annotations.EFragment;
-import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.*;
 import org.androidannotations.annotations.sharedpreferences.Pref;
 
 /**
@@ -31,19 +27,26 @@ public class ConnectionFragment extends Fragment {
 //	UserAdapter adapter;
 	@Pref
 	AppPrefs_ prefs;
+	public android.os.Handler handler = new android.os.Handler();
 
+	@UiThread
 	@AfterViews
 	void init() {
-//		serverIp.setText(prefs.serverIp().get());
-//		serverPort.setText(prefs.serverPort().get());
-//		userName.setText(prefs.userName().get());
+
+		try {
+			serverIp.setHint(prefs.serverIp().get());
+			serverPort.setHint(prefs.serverPort().get());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		userName.setHint(prefs.userName().get());
 	}
 
 	@Click(R.id.saveButton)
 	void onClick(View v) {
-		if(serverIp.getText().length() >0) prefs.edit().serverIp().put(serverIp.getText().toString()).apply();
-		if(serverPort.getText().length() >0)prefs.edit().serverPort().put(serverPort.getText().toString()).apply();
-		if(userName.getText().length() >0)prefs.edit().userName().put(userName.getText().toString()).apply();
+		if (serverIp.getText().length() > 0) prefs.edit().serverIp().put(serverIp.getText().toString()).apply();
+		if (serverPort.getText().length() > 0) prefs.edit().serverPort().put(serverPort.getText().toString()).apply();
+		if (userName.getText().length() > 0) prefs.edit().userName().put(userName.getText().toString()).apply();
 	}
 
 	public ConnectionFragment() {

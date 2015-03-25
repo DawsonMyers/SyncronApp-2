@@ -1,7 +1,7 @@
 package ca.syncron.app.system.ottoevents;
 
 import ca.syncron.app.network.connection.User;
-import ca.syncron.app.ui.activity.speechbubble.Message;
+import ca.syncron.app.network.Message;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.squareup.otto.Bus;
@@ -14,11 +14,12 @@ import java.util.ArrayList;
  * Created by Dawson on 3/23/2015.
  */
 // @EBean(scope = EBean.Scope.Singleton)
-	@Singleton
+@Singleton
 public class EventBus {
 	static              String           nameId = EventBus.class.getSimpleName();
 	public final static org.slf4j.Logger log    = LoggerFactory.getLogger(nameId);
-//@Inject
+
+	//@Inject
 	public EventBus() {}
 
 	private static final Bus      BUS  = new Bus(ThreadEnforcer.ANY);
@@ -40,7 +41,8 @@ public class EventBus {
 	public static void register(Object object) {
 		BUS.register(object);
 	}
-
+//  Builders
+///////////////////////////////////////////////////////
 	public void newUpdateUserEvent(ArrayList<User> users) {
 		getInstance().post(new UpdateUserEvent(users));
 	}
@@ -54,14 +56,19 @@ public class EventBus {
 	}
 
 	public void newSendTargetEvent(String userId, Message msg) {
-		getInstance().post(new SendTargetEvent(  userId,  msg));
+		getInstance().post(new SendTargetEvent(userId, msg));
 	}
+
 	public void newProgressEvent(boolean showProgress) {
 		getInstance().post(new ProgressEvent(showProgress));
 	}
+	public void newSetTargetIdEvent(String targetId) {
+		getInstance().post(new SetTargetIdEvent(targetId));
+	}
+
 
 	//  Events
-	///////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public class ProgressEvent {
 		public final boolean showProgress;
 
@@ -69,41 +76,62 @@ public class EventBus {
 			showProgress = b;
 		}
 	}
+
+	//
+///////////////////////////////////////////////////////
 	public class ChatReceiveEvent {
-		public final User mUser;
+		public final User   mUser;
 		public final String mMsg;
 
-		public ChatReceiveEvent(User user,String msg) {
+		public ChatReceiveEvent(User user, String msg) {
 			mUser = user;
 			mMsg = msg;
 		}
 	}
+
+	//
+///////////////////////////////////////////////////////
 	public class ChatSendEvent {
-		public final String  mUserId;
+		public final String mUserId;
 		public final String mMsg;
 
-		public ChatSendEvent(String userId,String msg) {
+		public ChatSendEvent(String userId, String msg) {
 			mUserId = userId;
 			mMsg = msg;
 		}
 	}
+
+	//
+///////////////////////////////////////////////////////
 	public class SendTargetEvent {
-		public final String  mUserId;
-		public final Message mMsg;
+		public final String  userId;
+		public final Message msg;
 
 
-		public SendTargetEvent(String userId,Message msg) {
-			mUserId = userId;
-			mMsg = msg;
+		public SendTargetEvent(String userId, Message msg) {
+			this.userId = userId;
+			this.msg = msg;
 		}
 	}
 
-
-		public class UpdateUserEvent {
+	//
+///////////////////////////////////////////////////////
+	public class UpdateUserEvent {
 		public final ArrayList<User> mUsers;
 
 		public UpdateUserEvent(ArrayList<User> users) {
 			mUsers = users;
 		}
 	}
+
+	//
+///////////////////////////////////////////////////////
+	public class SetTargetIdEvent {
+		public String targetId;
+
+		public SetTargetIdEvent(String targetId) {
+			this.targetId = targetId;
+		}
+	}
+
 }

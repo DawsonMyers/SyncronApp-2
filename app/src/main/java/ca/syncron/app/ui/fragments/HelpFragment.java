@@ -8,7 +8,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 import ca.syncron.app.R;
 import ca.syncron.app.ui.fragments.views.UserAdapter;
-import ca.syncron.app.ui.fragments.views.test.Person;
+import ca.syncron.app.ui.fragments.views.test.UserItem;
 import ca.syncron.app.ui.fragments.views.test.PersonListAdapter;
 import org.androidannotations.annotations.*;
 
@@ -45,9 +45,9 @@ public class HelpFragment extends Fragment {
 	}
 
 	@ItemClick
-	void personListItemClicked(Person person) {
+	void personListItemClicked(UserItem userItem) {
 
-		Toast.makeText(this.getActivity(), person.firstName + " " + person.lastName, LENGTH_LONG).show();
+		Toast.makeText(this.getActivity(), userItem.userId + " " , LENGTH_LONG).show();
 	}
 
 //	@Override

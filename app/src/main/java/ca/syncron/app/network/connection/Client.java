@@ -122,8 +122,9 @@ public class Client extends Thread implements SocketObserver, Handler.MessageCal
 	}
 
 	public void connect() {
-		int port = Constants.Ports.getTcp();
+		int port = mController.getServerPortInt(); //Constants.Ports.getTcp();
 		//  Client
+//		String _ip = mController.getServerIp();
 		String ip = mController.getServerIp();// Constants.IpAddresses.IP;
 		try {
 			log.info("Starting Client");
@@ -143,6 +144,9 @@ public class Client extends Thread implements SocketObserver, Handler.MessageCal
 
 	}
 
+	public synchronized void restart() {
+		mEventMachine.shutdown();
+	}
 	public synchronized void reconnect() {
 		reconnecting = true;
 		int count = 0;
@@ -243,6 +247,31 @@ setUserBundles(msg.getUserBundles());
 
 	}
 
+	@Override
+	public void handleSubscribeMessage(Message msg) {
+
+	}
+
+	@Override
+	public void handleQueryMessage(Message msg) {
+
+	}
+
+	@Override
+	public void handleUnknownMessage(Message msg) {
+
+	}
+
+	@Override
+	public void handleAccessMessage(Message msg) {
+
+	}
+
+	@Override
+	public void handleTargetMessage(Message msg) {
+
+	}
+
 	//  Sending
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////
 	@Override
@@ -321,6 +350,42 @@ sendMessage(msg);
 
 	@Override
 	public <T> void processMessage(T msg) {
+
+	}
+
+	@Override
+	public void sendSubscribeMessage(Message msg) {
+
+	}
+
+	@Override
+	public void sendUserMessage(Message msg) {
+
+	}
+
+	@Override
+	public void sendErrorMessage(Message msg) {
+
+	}
+
+	@Override
+	public void sendQueryMessage(Message msg) {
+
+	}
+
+	@Override
+	public void sendUnknownMessage(Message msg) {
+
+	}
+
+	@Override
+	public void sendAccessMessage(Message msg) {
+
+	}
+
+	@Override
+	public void sendTargetMessage(Message msg) {
+
 
 	}
 

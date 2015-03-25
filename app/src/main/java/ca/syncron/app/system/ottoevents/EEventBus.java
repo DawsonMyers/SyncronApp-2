@@ -1,7 +1,7 @@
 package ca.syncron.app.system.ottoevents;
 
 import ca.syncron.app.network.connection.User;
-import ca.syncron.app.ui.activity.speechbubble.Message;
+import ca.syncron.app.network.Message;
 import com.google.inject.Inject;
 import com.squareup.otto.Bus;
 import org.androidannotations.annotations.EBean;
@@ -40,28 +40,23 @@ public class EEventBus {
 
 	public void newUserUpdateEvent(ArrayList<User> users) {
 		eBus.newUpdateUserEvent(users);
-//		getInstance().post(new EventBus.UpdateUserEvent(users));
-
 	}
 
 	public void newSendChatEvent(String userId, String msg) {
 		eBus.newChatSendEvent(userId, msg);
-//		getBus().post(new EventBus.ChatSendEvent(userId, msg));
 	}
-
 	public void newReceiveChatEvent(User user, String msg) {
 		eBus.newChatReceiveEvent(user, msg);
-//		getInstance().post(new ChatReceiveEvent(user, msg));
 	}
 	public void newSendTargetEvent(String userId,Message msg) {
 		eBus.newSendTargetEvent(  userId,  msg);
-//		getInstance().post(eBus.newSendTargetEvent(  userId,  msg));
 	}
 	public void newProgressEvent(boolean showProgress) {
 		eBus.newProgressEvent(showProgress);
-//		getInstance().post(new ProgressEvent(showProgress));
 	}
-
+	public void newSetTargetIdEvent(String targetId) {
+		eBus.newSetTargetIdEvent(targetId);
+	}
 	//  Events
 	///////////////////////////////////////////////////////
 //	public class ProgressEvent {

@@ -36,6 +36,7 @@ public class Message {
 	@JsonIgnore
 	public  MessageProcessor mapper;
 	private Date             mTimestamp;
+	private boolean          mIsTargeted;
 
 	public void setSerialMessage(String serialMessage) {
 		mSerialMessage = serialMessage;
@@ -62,7 +63,7 @@ public class Message {
 	}
 
 
-	public enum MessageType {DIGITAL, ANALOG, ADMIN, UPDATE, REGISTER, LOGIN, STATUS, CHECKIN, USER, STREAM, CHAT, QUERY, ERROR, UNKNOWN, ACCESS;}
+	public enum MessageType {DIGITAL, ANALOG, ADMIN, UPDATE, REGISTER, LOGIN, STATUS, CHECKIN, USER, STREAM, CHAT, QUERY, ERROR, UNKNOWN, ACCESS, TARGET, SUBSCRIBE;}
 
 	public enum UserType {NODE, SERVER, ANDROID, NODE_SERVER, NODE_CLIENT, UNKNOWN;}
 
@@ -278,6 +279,7 @@ public class Message {
 
 	boolean mAdmin;
 	boolean mReqResponse;
+	boolean mDoSubsribe;
 
 	int[] mAnalogValues;
 	int[] mDigitalValues;
@@ -290,6 +292,19 @@ public class Message {
 	long sampleRate;
 
 	boolean streamEnabled;
+	public boolean getIsTargeted() {
+		return mIsTargeted;
+	}
+	public boolean setIsTargeted() {
+		return mIsTargeted;
+	}
+	public void setDoSubsribe(boolean doSubsribe) {
+		mDoSubsribe = doSubsribe;
+	}
+
+	public boolean getDoSubsribe() {
+		return mDoSubsribe;
+	}
 	public void setTimestamp(Date timestamp) {
 		mTimestamp = timestamp;
 	}
