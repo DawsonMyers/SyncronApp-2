@@ -25,6 +25,8 @@ import org.androidannotations.annotations.sharedpreferences.Pref;
 import roboguice.util.Ln;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -133,10 +135,18 @@ public void initPrefs() {
 		e.printStackTrace();
 	}
 }
+
+	//	public ArrayList<User> users = new ArrayList<>();
+	public Map<String, User> userMap = new HashMap();
+
 	public ArrayList<User> convertUser(ArrayList<UserBundle> list) {
-		ArrayList<User> users = new ArrayList<>();
+//		ArrayList<User> users = new ArrayList<>();
+		userMap.clear();
+		users.clear();
 		for (UserBundle b : list) {
-			users.add(new User(b));
+			User u = new User(b);
+			userMap.put(b.getUserId(), u);
+			users.add(u);
 		}
 		return users;
 	}

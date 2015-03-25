@@ -5,12 +5,15 @@ import android.app.Fragment;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 import ca.syncron.app.R;
 import ca.syncron.app.system.ottoevents.EEventBus;
 import ca.syncron.app.ui.fragments.views.UserAdapter;
+import ca.syncron.app.ui.fragments.views.test.Person;
 import ca.syncron.app.ui.fragments.views.test.PersonListAdapter;
-import ca.syncron.app.ui.fragments.views.test.UserItem;
 import org.androidannotations.annotations.*;
+
+import static android.widget.Toast.LENGTH_LONG;
 
 /**
  * A simple {@link android.app.Fragment} subclass.
@@ -44,9 +47,9 @@ public class UsersFragment extends Fragment {
 	}
 
 	@ItemClick
-	void personListItemClicked(UserItem userItem) {
-bus.newSetTargetIdEvent(userItem.userId);
-	//	Toast.makeText(this.getActivity(), userItem.firstName + " " + userItem.lastName, LENGTH_LONG).show();
+	void personListItemClicked(Person person) {
+
+		Toast.makeText(this.getActivity(), person.firstName + " " + person.lastName, LENGTH_LONG).show();
 	}
 
 //	@Override

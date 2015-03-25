@@ -18,9 +18,9 @@ import java.util.List;
  */
 @EBean
 public class PersonListAdapter extends BaseAdapter {
-	public List<User>     user      = new ArrayList<>();
-	public List<UserItem> mUserItem = new ArrayList<>();
-	List<UserItem> mUserItems = new ArrayList<>();
+	public List<User>   user   = new ArrayList<>();
+	public List<Person> person = new ArrayList<>();
+	List<Person> persons = new ArrayList<>();
 	;
 
 //	@Bean(InMemoryPersonFinder.class)
@@ -31,10 +31,10 @@ public class PersonListAdapter extends BaseAdapter {
 
 	@AfterInject
 	void initAdapter() {
-		mUserItems = mUserItems;//personFinder.findAll();
+		persons = persons;//personFinder.findAll();
 		user = SyncronService.getInstance().getUsers();//personFinder.findAll();
 		for (User u : user) {
-			mUserItems.add(new UserItem(u.getTimeStamp(), u.getUserId(), u.getType()));
+			persons.add(new Person(u.getTimeStamp(),u.getUserId(), u.getType() ));
 		}
 //		persons.add(new Person("Dawson", "Myers"));
 //		persons.add(new Person("Shea", "Myers"));
@@ -63,14 +63,14 @@ public class PersonListAdapter extends BaseAdapter {
 
 	@Override
 	public int getCount() {
-		return mUserItems.size();
+		return persons.size();
 	}
 
 	@Override
-	public UserItem getItem(int position) {
+	public Person getItem(int position) {
 //	public Person getItem(int position) {
 //		return user.get(position);
-		return mUserItems.get(position);
+		return persons.get(position);
 	}
 
 	@Override

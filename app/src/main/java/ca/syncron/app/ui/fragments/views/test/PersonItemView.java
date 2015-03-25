@@ -23,8 +23,8 @@ public class PersonItemView extends LinearLayout {
 		super(context);
 	}
 
-	public void bind(UserItem userItem) {
-		firstNameView.setText(userItem.firstName);
-		lastNameView.setText(userItem.lastName);
+	public void bind(Person person) {
+		firstNameView.setText(person.firstName);
+		lastNameView.setText(person.lastName);
 	}
 }

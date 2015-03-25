@@ -45,7 +45,9 @@ public class User {
 		name = bundle.getName();
 		type = bundle.getType().toString();
 		userId = bundle.getUserId();
-		timeStamp =  bundle.getTimeStamp().toString();
+
+		if (bundle.getTimeStamp()  != null) timeStamp = bundle.getTimeStamp().toString();
+		else timeStamp = "null";
 		accessLevel = bundle.getAccessLevel().toString();
 		log.error("USER ITEM BOUND");
 	}

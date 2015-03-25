@@ -21,7 +21,7 @@ public class UserBundle {
 	private String           name   = "NotSet";
 	private Message.UserType type   = Message.UserType.ANDROID;
 	private String           userId = "NotSet";
-	private Date timeStamp;// = new Date();
+	private Date timeStamp = new Date();
 	private Constants.Access accessLevel = Constants.Access.USER;
 //	public HashMap<String, NodeClientBundler.NodeBundle> nodes = new HashMap<>();
 
